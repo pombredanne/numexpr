@@ -13,6 +13,7 @@ import os
 import sys
 import platform
 import warnings
+from contextlib import contextmanager
 
 import numpy as np
 from numpy import (
@@ -720,19 +721,19 @@ class test_strings(TestCase):
         self.assert_missing_op('add_sss', expr, locals())
 
     def test_empty_string1(self):
-        a = np.array(["", "pepe"])
-        b = np.array(["pepe2", ""])
-        res = evaluate("(a == '') & (b == 'pepe2')")
+        a = np.array([b"", b"pepe"])
+        b = np.array([b"pepe2", b""])
+        res = evaluate("(a == b'') & (b == b'pepe2')")
         assert_array_equal(res, np.array([True, False]))
-        res2 = evaluate("(a == 'pepe') & (b == '')")
+        res2 = evaluate("(a == b'pepe') & (b == b'')")
         assert_array_equal(res2, np.array([False, True]))
 
     def test_empty_string2(self):
-        a = np.array(["p", "pepe"])
-        b = np.array(["pepe2", ""])
-        res = evaluate("(a == '') & (b == 'pepe2')")
+        a = np.array([b"p", b"pepe"])
+        b = np.array([b"pepe2", b""])
+        res = evaluate("(a == b'') & (b == b'pepe2')")
         assert_array_equal(res, np.array([False, False]))
-        res2 = evaluate("(a == 'pepe') & (b == '')")
+        res2 = evaluate("(a == b'pepe') & (b == b'')")
         assert_array_equal(res, np.array([False, False]))
 
     def test_add_numeric_array(self):
@@ -813,6 +814,31 @@ class test_zerodim(TestCase):
         assert_array_equal(r1, a1)
 
 
+@contextmanager
+def _environment(key, value):
+    old = os.environ.get(key)
+    os.environ[key] = value
+    try:
+        yield
+    finally:
+        if old:
+            os.environ[key] = old
+        else:
+            del os.environ[key]
+
+
+# Test cases for the threading configuration
+class test_threading_config(TestCase):
+    def test_numexpr_num_threads(self):
+        with _environment('OMP_NUM_THREADS', '5'):
+            with _environment('NUMEXPR_NUM_THREADS', '3'):
+                self.assertEquals(3, numexpr.detect_number_of_threads())
+
+    def test_omp_num_threads(self):
+        with _environment('OMP_NUM_THREADS', '5'):
+            self.assertEquals(5, numexpr.detect_number_of_threads())
+
+
 # Case test for threads
 class test_threading(TestCase):
     def test_thread(self):
@@ -886,6 +912,10 @@ def test():
     """
 
     print_versions()
+    # For some reason, NumPy issues all kinds of warnings when using Python3.
+    # Ignoring them in tests should be ok, as all results are checked out.
+    # See https://github.com/pydata/numexpr/issues/183 for details.
+    np.seterr(divide='ignore', invalid='ignore', over='ignore', under='ignore')
     return unittest.TextTestRunner().run(suite())
 
 
@@ -924,6 +954,7 @@ def suite():
         theSuite.addTest(
             unittest.makeSuite(test_irregular_stride))
         theSuite.addTest(unittest.makeSuite(test_zerodim))
+        theSuite.addTest(unittest.makeSuite(test_threading_config))
 
         # multiprocessing module is not supported on Hurd/kFreeBSD
         if (pl.system().lower() not in ('gnu', 'gnu/kfreebsd')):

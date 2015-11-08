@@ -1,3 +1,22 @@
+======================================================
+Numexpr: Fast numerical expression evaluator for NumPy
+======================================================
+
+:Author: David M. Cooke, Francesc Alted and others
+:Contact: faltet@gmail.com
+:URL: https://github.com/pydata/numexpr
+:Travis CI: |travis|
+:Appveyor: |appveyor|
+:PyPi: |version| |pypi|
+
+.. |travis| image:: https://travis-ci.org/pydata/numexpr.png?branch=master
+        :target: https://travis-ci.org/pydata/numexpr
+.. |appveyor| image:: https://ci.appveyor.com/api/projects/status/github/FrancescAlted/numexpr
+        :target: https://ci.appveyor.com/project/FrancescAlted/numexpr
+.. |pypi| image:: https://pypip.in/d/numexpr/badge.png
+        :target: https://pypi.python.org/pypi/numexpr
+
+
 What it is Numexpr?
 ===================
 

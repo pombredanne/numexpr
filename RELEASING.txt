@@ -20,7 +20,6 @@ Preliminaries
 - Do a commit and a push:
 
   $ git commit -a -m"Getting ready for release X.Y.Z"
-  $ git push
 
 Testing
 -------
@@ -60,14 +59,9 @@ Uploading
 - Upload it in the PyPi repository:
 
   $ python setup.py sdist upload
-  $ python setup.py register
 
 Announcing
 ----------
-
-- Update the release notes in the numexpr site:
-
-  https://github.com/pydata/numexpr/wiki/Release-Notes
 
 - Send an announcement to the NumPy list and python-announce list.
   Use the ``ANNOUNCE.rst`` file as skeleton (or possibly as the

@@ -1,5 +1,5 @@
 =========================
- Announcing Numexpr 2.4.4
+ Announcing Numexpr 2.4.7
 =========================
 
 Numexpr is a fast numerical expression evaluator for NumPy.  With it,
@@ -26,9 +26,7 @@ What's new
 In case you want to know more in detail what has changed in this
 version, see:
 
-https://github.com/pydata/numexpr/wiki/Release-Notes
-
-or have a look at RELEASE_NOTES.txt in the tarball.
+https://github.com/pydata/numexpr/blob/master/RELEASE_NOTES.rst
 
 Where I can find Numexpr?
 =========================

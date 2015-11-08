@@ -2,10 +2,54 @@
  Release notes for Numexpr 2.4 series
 ======================================
 
-Changes from 2.4.3 to 2.4.4
+Changes from 2.4.6 to 2.4.7
 ===========================
 
 #XXX version-specific blurb XXX#
+
+
+Changes from 2.4.5 to 2.4.6
+===========================
+
+- Fixed some UserWarnings in Solaris (PR #189, Graham Jones).
+
+- Better handling of MSVC defines. (#168, Francesc Alted).
+
+
+Changes from 2.4.4 to 2.4.5
+===========================
+
+- Undone a 'fix' for a harmless data race.  (#185 Benedikt Reinartz,
+  Francesc Alted).
+
+- Ignore NumPy warnings (overflow/underflow, divide by zero and
+  others) that only show up in Python3.  Masking these warnings in
+  tests is fine because all the results are checked to be
+  valid. (#183, Francesc Alted).
+
+
+Changes from 2.4.3 to 2.4.4
+===========================
+
+- Fix bad #ifdef for including stdint on Windows (PR #186, Mike Sarahan).
+
+
+Changes from 2.4.3 to 2.4.4
+===========================
+
+* Honor OMP_NUM_THREADS as a fallback in case NUMEXPR_NUM_THREADS is not
+  set. Fixes #161. (PR #175, Stefan Erb).
+
+* Added support for AppVeyor (PR #178 Andrea Bedini)
+
+* Fix to allow numexpr to be imported after eventlet.monkey_patch(),
+  as suggested in #118 (PR #180 Ben Moran).
+
+* Fix harmless data race that triggers false positives in ThreadSanitizer.
+  (PR #179, Clement Courbet).
+
+* Fixed some string tests on Python 3 (PR #182, Antonio Valentino).
+
 
 Changes from 2.4.2 to 2.4.3
 ===========================
